@@ -1,0 +1,61 @@
+version: "3"
+services:
+    transactional-email-service-nginx:
+        build:
+            context: ./.docker/development
+            dockerfile: nginx.docker
+        container_name: transactional-email-service-nginx
+        volumes:
+            - "$PWD/app:/var/www/app:rw"
+        environment:
+            VIRTUAL_HOST: "transactional-email-service"
+            PHP_IDE_CONFIG: "serverName=Docker"
+        depends_on:
+            - transactional-email-service-php-fpm
+        ports:
+            - 8088:80
+    transactional-email-service-php-fpm:
+        build:
+            context: ./.docker/development
+            dockerfile: php-fpm.docker
+        container_name: transactional-email-service-php-fpm
+        volumes:
+            - "$PWD/app:/var/www/app:rw"
+        environment:
+            XDEBUG_CONFIG: "remote_host=192.168.221.1 remote_enable=1"
+            PHP_IDE_CONFIG: "serverName=Docker"
+        depends_on:
+            - transactional-email-service-mysql
+    transactional-email-service-php-cli:
+        build:
+            context: ./.docker/development
+            dockerfile: php-cli.docker
+        container_name: transactional-email-service-php-cli
+        volumes:
+            - "$PWD/app:/var/www/app:rw"
+            - "$PWD/.data/composer:/root/.composer/cache"
+        environment:
+            XDEBUG_CONFIG: "remote_host=192.168.221.1 remote_enable=1"
+            PHP_IDE_CONFIG: "serverName=Docker"
+        depends_on:
+            - transactional-email-service-mysql
+    transactional-email-service-mysql:
+        image: mysql:8
+        container_name: transactional-email-service-mysql
+        volumes:
+            - "$PWD/.data/db/mysql8:/var/lib/mysql"
+        environment:
+            MYSQL_ROOT_PASSWORD: root
+            MYSQL_USER: user
+            MYSQL_PASSWORD: password
+            MYSQL_DATABASE: db
+        ports:
+            - 33068:3306
+    transactional-email-service-rabbitmq:
+        image: rabbitmq:management
+        container_name: transactional-email-service-rabbitmq
+        volumes:
+            - "$PWD/app:/var/www/app:rw"
+        ports:
+            - 5672:5672
+            - 15672:15672
