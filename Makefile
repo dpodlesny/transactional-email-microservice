@@ -1,5 +1,5 @@
 init: docker-down-clear docker-pull docker-build docker-up app-init
-app-init: app-composer-install app-wait-db app-migrations app-migrations-test app-fixtures
+app-init: app-composer-install app-wait-db app-migrations app-migrations-test
 validate: app-schema-validate app-cs app-phpstan app-codeception-test
 restart: docker-down docker-up
 
@@ -44,9 +44,6 @@ app-one-migration:
 	rm -f app/migrations/*.php
 	docker-compose run --rm transactional-email-service-php-cli php bin/console do:mi:di
 	docker-compose run --rm transactional-email-service-php-cli php bin/console do:mi:mi -n
-
-app-fixtures:
-	docker-compose run --rm transactional-email-service-php-cli php bin/console do:fixtures:load -n
 
 app-schema-validate:
 	docker-compose run --rm transactional-email-service-php-cli php bin/console do:schema:validate
