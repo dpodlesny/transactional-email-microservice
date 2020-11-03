@@ -27,3 +27,14 @@ Password: password
 **CLI**:
 
     $ docker-compose run --rm transactional-email-service-php-cli
+
+
+**API**
+
+Get paginated list of mails
+
+Items per page: 10
+```
+GET http://localhost:8088/api/mails?page=1
+Accept: application/json
+```
