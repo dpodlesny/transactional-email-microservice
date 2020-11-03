@@ -5,6 +5,7 @@ namespace App\Entity;
 
 use App\Repository\RecipientRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -22,6 +23,8 @@ class Recipient
     private int $id;
 
     /**
+     * @Groups({"api", "create"})
+     *
      * @ORM\Column(type="string", length=255)
      *
      * @Assert\Email()
@@ -32,6 +35,8 @@ class Recipient
     private string $email;
 
     /**
+     * @Groups({"api", "create"})
+     *
      * @ORM\Column(type="string", length=255)
      *
      * @Assert\NotNull()

@@ -18,7 +18,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Mail
 {
     /**
-     * @Groups("api")
+     * @Groups({"api"})
      *
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -29,7 +29,7 @@ class Mail
     private int $id;
 
     /**
-     * @Groups("api")
+     * @Groups({"api", "create"})
      *
      * @ORM\OneToOne(targetEntity=Recipient::class, cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
@@ -41,7 +41,7 @@ class Mail
     private Recipient $recipient;
 
     /**
-     * @Groups("api")
+     * @Groups({"api", "create"})
      *
      * @ORM\Column(type="string", length=255, unique=true)
      *
@@ -52,25 +52,25 @@ class Mail
     private string $subject;
 
     /**
-     * @Groups("api")
+     * @Groups({"api", "create"})
      *
      * @ORM\OneToMany(targetEntity=Recipient::class, mappedBy="mail")
      *
-     * @var Recipient[]|ArrayCollection
+     * @var Recipient[]|Collection
      */
-    private ArrayCollection $additionalRecipients;
+    private Collection $additionalRecipients;
 
     /**
-     * @Groups("api")
+     * @Groups({"api", "create"})
      *
      * @ORM\OneToMany(targetEntity=Content::class, mappedBy="mail")
      *
-     * @var Content[]|ArrayCollection
+     * @var Content[]|Collection
      */
-    private ArrayCollection $contents;
+    private Collection $contents;
 
     /**
-     * @Groups("api")
+     * @Groups({"api"})
      *
      * @ORM\Column(type="datetime")
      *
@@ -79,13 +79,13 @@ class Mail
     private DateTimeInterface $createdAt;
 
     /**
-     * @Groups("api")
+     * @Groups({"api"})
      *
      * @ORM\Column(type="datetime")
      *
-     * @var DateTimeInterface
+     * @var ?DateTimeInterface
      */
-    private DateTimeInterface $sentAt;
+    private ?DateTimeInterface $sentAt;
 
     /**
      * @param Recipient $recipient

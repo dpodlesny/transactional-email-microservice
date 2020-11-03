@@ -5,6 +5,7 @@ namespace App\Entity;
 
 use App\Repository\ContentRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -22,6 +23,8 @@ class Content
     private int $id;
 
     /**
+     * @Groups({"api", "create"})
+     *
      * @ORM\Column(type="string", length=255)
      *
      * @Assert\NotNull()
@@ -32,6 +35,8 @@ class Content
     private string $type;
 
     /**
+     * @Groups({"api", "create"})
+     *
      * @ORM\Column(type="text")
      *
      * @Assert\NotNull()
