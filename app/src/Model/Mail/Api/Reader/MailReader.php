@@ -34,29 +34,9 @@ class MailReader implements MailReaderInterface
         $limit = MailConfig::getPageSize();
         $offset = $limit * ($page - 1);
 
-        return $this->createListResponseData($this->mailRepository->findBy([], [], $limit, $offset));
-    }
-
-    /**
-     * @param int $page
-     *
-     * @return array
-     */
-    public function findPendingPaginated(int $page = 1): array
-    {
-        return $this->createListResponseData($this->mailRepository->findPendingPaginated($page));
-    }
-
-    /**
-     * @param array $items
-     *
-     * @return array
-     */
-    private function createListResponseData(array $items): array
-    {
         return [
             static::KEY_TOTAL => $this->mailRepository->totalCount(),
-            static::KEY_ITEMS => $items,
+            static::KEY_ITEMS => $this->mailRepository->findBy([], [], $limit, $offset),
         ];
     }
 }

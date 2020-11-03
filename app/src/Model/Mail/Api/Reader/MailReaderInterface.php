@@ -11,11 +11,4 @@ interface MailReaderInterface
      * @return array
      */
     public function findPaginated(int $page = 1): array;
-
-    /**
-     * @param int $page
-     *
-     * @return array
-     */
-    public function findPendingPaginated(int $page = 1): array;
 }

@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace App\Repository;
 
 use App\Entity\Mail;
-use App\Model\Mail\MailConfig;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -30,25 +29,5 @@ class MailRepository extends ServiceEntityRepository
                          ->select('count(t.id)')
                          ->getQuery()
                          ->getSingleScalarResult();
-    }
-
-    /**
-     * @param int $page
-     *
-     * @return array
-     */
-    public function findPendingPaginated(int $page): array
-    {
-        $qb = $this->createQueryBuilder('t');
-
-        $limit = MailConfig::getPageSize();
-        $offset = $limit * ($page - 1);
-
-        return $qb
-            ->where($qb->expr()->isNull('t.sentAt'))
-            ->setFirstResult($offset)
-            ->setMaxResults($limit)
-            ->getQuery()
-            ->getArrayResult();
     }
 }
