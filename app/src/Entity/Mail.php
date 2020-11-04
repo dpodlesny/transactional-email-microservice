@@ -35,6 +35,7 @@ class Mail
      * @ORM\JoinColumn(nullable=false)
      *
      * @Assert\NotNull()
+     * @Assert\Valid()
      *
      * @var Recipient
      */
@@ -56,6 +57,9 @@ class Mail
      *
      * @ORM\OneToMany(targetEntity=Recipient::class, mappedBy="mail", cascade={"persist", "remove"}, orphanRemoval=true)
      *
+     * @Assert\Valid()
+     * @Assert\NotBlank()
+     *
      * @var Recipient[]|Collection
      */
     private Collection $additionalRecipients;
@@ -64,6 +68,12 @@ class Mail
      * @Groups({"api", "create"})
      *
      * @ORM\OneToMany(targetEntity=Content::class, mappedBy="mail", cascade={"persist", "remove"}, orphanRemoval=true)
+     *
+     * @Assert\Valid()
+     * @Assert\Count(
+     *      min = 1,
+     *      minMessage = "Contents can't be empty",
+     * )
      *
      * @var Content[]|Collection
      */

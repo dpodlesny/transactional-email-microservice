@@ -28,7 +28,7 @@ class Content
      * @ORM\Column(type="string", length=255)
      *
      * @Assert\NotNull()
-     * @Assert\Choice(callback={"App\Model\Mail\Config", "getAllowedContentTypes"})
+     * @Assert\Choice(callback={"App\Model\Mail\MailConfig", "getAllowedContentTypes"})
      *
      * @var string
      */
