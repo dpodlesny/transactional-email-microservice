@@ -64,12 +64,6 @@ class MailCreator implements MailCreatorInterface
             throw new BadRequestHttpException($e->getMessage());
         }
 
-        if ($this->validator->validate($mail) === false) {
-            throw new BadRequestHttpException($this->validator->getErrorMessage());
-        }
-
-        $this->em->persist($mail->getRecipient());
-
         foreach ($mail->getAdditionalRecipients() as $additionalRecipient) {
             $additionalRecipient->setMail($mail);
         }
@@ -78,6 +72,11 @@ class MailCreator implements MailCreatorInterface
             $content->setMail($mail);
         }
 
+        if ($this->validator->validate($mail) === false) {
+            throw new BadRequestHttpException($this->validator->getErrorMessage());
+        }
+
+        $this->em->persist($mail->getRecipient());
         $this->em->persist($mail);
         $this->em->flush();
         $this->em->refresh($mail);
