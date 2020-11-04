@@ -55,7 +55,7 @@ app-cs-fix:
 	docker-compose run --rm transactional-email-service-php-cli composer cs-fix
 
 app-phpstan:
-	docker-compose run --rm transactional-email-service-php-cli vendor/bin/phpstan analyse src tests -l 5
+	docker-compose run --rm transactional-email-service-php-cli vendor/bin/phpstan analyse src -l 5
 
 app-codeception-test:
 	docker-compose run --rm transactional-email-service-php-cli vendor/bin/codecept run
