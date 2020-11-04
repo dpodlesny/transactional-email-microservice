@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Tests;
 
+use App\Entity\Mail;
 use Codeception\Util\HttpCode;
 
 class MailCreatePositiveCest
@@ -72,6 +73,10 @@ class MailCreatePositiveCest
             ],
             '$.contents[0]'
         );
+
+        $response = json_decode($I->grabResponse(), true);
+
+        $I->seeInRepository(Mail::class, ['id' => $response['id']]);
     }
 
     public function testCreateMailWithMinimumFields(ApiTester $I): void
@@ -118,5 +123,9 @@ class MailCreatePositiveCest
             ],
             '$.contents[0]'
         );
+
+        $response = json_decode($I->grabResponse(), true);
+
+        $I->seeInRepository(Mail::class, ['id' => $response['id']]);
     }
 }

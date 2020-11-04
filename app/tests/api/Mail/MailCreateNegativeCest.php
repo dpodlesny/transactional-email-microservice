@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Tests;
 
+use App\Entity\Mail;
 use Codeception\Util\HttpCode;
 
 class MailCreateNegativeCest
@@ -44,6 +45,8 @@ class MailCreateNegativeCest
         $I->seeResponseMatchesJsonType([
             'message' => 'string',
         ]);
+
+        $I->dontSeeInRepository(Mail::class);
     }
 
     public function testCreateMailWithoutRecipient(ApiTester $I): void
@@ -80,6 +83,8 @@ class MailCreateNegativeCest
         $I->seeResponseMatchesJsonType([
             'message' => 'string',
         ]);
+
+        $I->dontSeeInRepository(Mail::class);
     }
 
     public function testCreateMailWithoutRecipientName(ApiTester $I): void
@@ -119,6 +124,8 @@ class MailCreateNegativeCest
         $I->seeResponseMatchesJsonType([
             'message' => 'string',
         ]);
+
+        $I->dontSeeInRepository(Mail::class);
     }
 
     public function testCreateMailWithoutRecipientEmail(ApiTester $I): void
@@ -158,6 +165,8 @@ class MailCreateNegativeCest
         $I->seeResponseMatchesJsonType([
             'message' => 'string',
         ]);
+
+        $I->dontSeeInRepository(Mail::class);
     }
 
     public function testCreateMailWithoutContents(ApiTester $I): void
@@ -188,6 +197,8 @@ class MailCreateNegativeCest
         $I->seeResponseMatchesJsonType([
             'message' => 'string',
         ]);
+
+        $I->dontSeeInRepository(Mail::class);
     }
 
     public function testCreateMailWithoutContentsType(ApiTester $I): void
@@ -227,6 +238,8 @@ class MailCreateNegativeCest
         $I->seeResponseMatchesJsonType([
             'message' => 'string',
         ]);
+
+        $I->dontSeeInRepository(Mail::class);
     }
 
     public function testCreateMailWithoutContentsContent(ApiTester $I): void
@@ -266,6 +279,8 @@ class MailCreateNegativeCest
         $I->seeResponseMatchesJsonType([
             'message' => 'string',
         ]);
+
+        $I->dontSeeInRepository(Mail::class);
     }
 
     public function testCreateMailWithoutAdditionalRecipientName(ApiTester $I): void
@@ -305,6 +320,8 @@ class MailCreateNegativeCest
         $I->seeResponseMatchesJsonType([
             'message' => 'string',
         ]);
+
+        $I->dontSeeInRepository(Mail::class);
     }
 
     public function testCreateMailWithoutAdditionalRecipientEmail(ApiTester $I): void
@@ -344,5 +361,7 @@ class MailCreateNegativeCest
         $I->seeResponseMatchesJsonType([
             'message' => 'string',
         ]);
+
+        $I->dontSeeInRepository(Mail::class);
     }
 }
