@@ -60,18 +60,6 @@ class Recipient
     private ?Mail $mail;
 
     /**
-     * @param string $email
-     * @param string $name
-     * @param Mail|null $mail
-     */
-    public function __construct(string $email, string $name, ?Mail $mail)
-    {
-        $this->email = $email;
-        $this->name = $name;
-        $this->mail = $mail;
-    }
-
-    /**
      * @return int
      */
     public function getId(): int
@@ -88,6 +76,18 @@ class Recipient
     }
 
     /**
+     * @param string $email
+     *
+     * @return Recipient
+     */
+    public function setEmail(string $email): Recipient
+    {
+        $this->email = $email;
+
+        return $this;
+    }
+
+    /**
      * @return string
      */
     public function getName(): string
@@ -96,10 +96,34 @@ class Recipient
     }
 
     /**
+     * @param string $name
+     *
+     * @return Recipient
+     */
+    public function setName(string $name): Recipient
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    /**
      * @return Mail|null
      */
     public function getMail(): ?Mail
     {
         return $this->mail;
+    }
+
+    /**
+     * @param Mail|null $mail
+     *
+     * @return Recipient
+     */
+    public function setMail(?Mail $mail): Recipient
+    {
+        $this->mail = $mail;
+
+        return $this;
     }
 }

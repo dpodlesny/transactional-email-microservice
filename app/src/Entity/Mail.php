@@ -31,7 +31,7 @@ class Mail
     /**
      * @Groups({"api", "create"})
      *
-     * @ORM\OneToOne(targetEntity=Recipient::class, cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity=Recipient::class, cascade={"persist", "remove"}, orphanRemoval=true)
      * @ORM\JoinColumn(nullable=false)
      *
      * @Assert\NotNull()
@@ -43,7 +43,7 @@ class Mail
     /**
      * @Groups({"api", "create"})
      *
-     * @ORM\Column(type="string", length=255, unique=true)
+     * @ORM\Column(type="string", length=255)
      *
      * @Assert\NotNull()
      *
@@ -54,7 +54,7 @@ class Mail
     /**
      * @Groups({"api", "create"})
      *
-     * @ORM\OneToMany(targetEntity=Recipient::class, mappedBy="mail")
+     * @ORM\OneToMany(targetEntity=Recipient::class, mappedBy="mail", cascade={"persist", "remove"}, orphanRemoval=true)
      *
      * @var Recipient[]|Collection
      */
@@ -63,7 +63,7 @@ class Mail
     /**
      * @Groups({"api", "create"})
      *
-     * @ORM\OneToMany(targetEntity=Content::class, mappedBy="mail")
+     * @ORM\OneToMany(targetEntity=Content::class, mappedBy="mail", cascade={"persist", "remove"}, orphanRemoval=true)
      *
      * @var Content[]|Collection
      */
@@ -87,14 +87,8 @@ class Mail
      */
     private ?DateTimeInterface $sentAt;
 
-    /**
-     * @param Recipient $recipient
-     * @param string $subject
-     */
-    public function __construct(Recipient $recipient, string $subject)
+    public function __construct()
     {
-        $this->recipient = $recipient;
-        $this->subject = $subject;
         $this->additionalRecipients = new ArrayCollection();
         $this->contents = new ArrayCollection();
         $this->createdAt = new DateTime();
@@ -117,6 +111,18 @@ class Mail
     }
 
     /**
+     * @param Recipient $recipient
+     *
+     * @return Mail
+     */
+    public function setRecipient(Recipient $recipient): Mail
+    {
+        $this->recipient = $recipient;
+
+        return $this;
+    }
+
+    /**
      * @return string
      */
     public function getSubject(): string
@@ -125,11 +131,95 @@ class Mail
     }
 
     /**
-     * @return Collection|Recipient[]
+     * @param string $subject
+     *
+     * @return Mail
      */
-    public function getAdditionalRecipients(): Collection
+    public function setSubject(string $subject): Mail
+    {
+        $this->subject = $subject;
+
+        return $this;
+    }
+
+    /**
+     * @return Recipient[]|Collection
+     */
+    public function getAdditionalRecipients()
     {
         return $this->additionalRecipients;
+    }
+
+    /**
+     * @param Recipient[] $additionalRecipients
+     *
+     * @return Mail
+     */
+    public function setAdditionalRecipients(array $additionalRecipients)
+    {
+        $this->additionalRecipients = new ArrayCollection($additionalRecipients);
+
+        return $this;
+    }
+
+    /**
+     * @return Content[]|Collection
+     */
+    public function getContents()
+    {
+        return $this->contents;
+    }
+
+    /**
+     * @param Content[] $contents
+     *
+     * @return Mail
+     */
+    public function setContents(array $contents)
+    {
+        $this->contents = new ArrayCollection($contents);
+
+        return $this;
+    }
+
+    /**
+     * @return DateTimeInterface
+     */
+    public function getCreatedAt(): DateTimeInterface
+    {
+        return $this->createdAt;
+    }
+
+    /**
+     * @param DateTimeInterface $createdAt
+     *
+     * @return Mail
+     */
+    public function setCreatedAt(DateTimeInterface $createdAt): Mail
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    /**
+     * @return DateTimeInterface|null
+     */
+    public function getSentAt(): ?DateTimeInterface
+    {
+        return $this->sentAt;
+    }
+
+    /**
+     * @param DateTimeInterface|null $sentAt
+     *
+     * @return Mail
+     */
+    public function setSentAt(?DateTimeInterface $sentAt): Mail
+    {
+        $this->sentAt = $sentAt;
+
+        return $this;
     }
 
     /**
@@ -147,14 +237,6 @@ class Mail
     }
 
     /**
-     * @return Collection|Content[]
-     */
-    public function getContents(): Collection
-    {
-        return $this->contents;
-    }
-
-    /**
      * @param Content $content
      *
      * @return Mail
@@ -164,32 +246,6 @@ class Mail
         if (!$this->contents->contains($content)) {
             $this->contents[] = $content;
         }
-
-        return $this;
-    }
-
-    /**
-     * @return DateTimeInterface
-     */
-    public function getCreatedAt(): DateTimeInterface
-    {
-        return $this->createdAt;
-    }
-
-    /**
-     * @return DateTimeInterface|null
-     */
-    public function getSentAt(): ?DateTimeInterface
-    {
-        return $this->sentAt;
-    }
-
-    /**
-     * @return Mail
-     */
-    public function markAsSent(): Mail
-    {
-        $this->sentAt = new DateTime();
 
         return $this;
     }

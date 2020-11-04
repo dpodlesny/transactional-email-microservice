@@ -55,18 +55,6 @@ class Content
     private Mail $mail;
 
     /**
-     * @param string $type
-     * @param string $content
-     * @param Mail $mail
-     */
-    public function __construct(string $type, string $content, Mail $mail)
-    {
-        $this->type = $type;
-        $this->content = $content;
-        $this->mail = $mail;
-    }
-
-    /**
      * @return int
      */
     public function getId(): int
@@ -83,6 +71,18 @@ class Content
     }
 
     /**
+     * @param string $type
+     *
+     * @return Content
+     */
+    public function setType(string $type): Content
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
+    /**
      * @return string
      */
     public function getContent(): string
@@ -91,10 +91,34 @@ class Content
     }
 
     /**
+     * @param string $content
+     *
+     * @return Content
+     */
+    public function setContent(string $content): Content
+    {
+        $this->content = $content;
+
+        return $this;
+    }
+
+    /**
      * @return Mail
      */
     public function getMail(): Mail
     {
         return $this->mail;
+    }
+
+    /**
+     * @param Mail $mail
+     *
+     * @return Content
+     */
+    public function setMail(Mail $mail): Content
+    {
+        $this->mail = $mail;
+
+        return $this;
     }
 }
