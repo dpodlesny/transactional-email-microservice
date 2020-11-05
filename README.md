@@ -28,6 +28,13 @@ Password: password
 
     $ docker-compose run --rm transactional-email-service-php-cli
 
+**CLI Example**
+
+Create mail request 
+
+```
+docker-compose run --rm transactional-email-service-php-cli php bin/console mail:create
+```
 
 **API Example**
 
