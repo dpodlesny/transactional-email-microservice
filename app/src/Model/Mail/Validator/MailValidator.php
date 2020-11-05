@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Model\Mail\Api\Validator;
+namespace App\Model\Mail\Validator;
 
 use App\Entity\Mail;
 use Symfony\Component\Validator\ConstraintViolationInterface;
