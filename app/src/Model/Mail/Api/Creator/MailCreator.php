@@ -4,8 +4,7 @@ declare(strict_types=1);
 namespace App\Model\Mail\Api\Creator;
 
 use App\Entity\Mail;
-use App\Model\Mail\Api\Validator\MailValidatorInterface;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Model\Mail\Saver\MailSaverInterface;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Serializer\SerializerInterface;
 use Throwable;
@@ -18,28 +17,20 @@ class MailCreator implements MailCreatorInterface
     protected SerializerInterface $serializer;
 
     /**
-     * @var MailValidatorInterface
+     * @var MailSaverInterface
      */
-    protected MailValidatorInterface $validator;
-
-    /**
-     * @var EntityManagerInterface
-     */
-    protected EntityManagerInterface $em;
+    protected MailSaverInterface $mailSaver;
 
     /**
      * @param SerializerInterface $serializer
-     * @param MailValidatorInterface $validator
-     * @param EntityManagerInterface $em
+     * @param MailSaverInterface $mailSaver
      */
     public function __construct(
         SerializerInterface $serializer,
-        MailValidatorInterface $validator,
-        EntityManagerInterface $em
+        MailSaverInterface $mailSaver
     ) {
         $this->serializer = $serializer;
-        $this->validator = $validator;
-        $this->em = $em;
+        $this->mailSaver = $mailSaver;
     }
 
     /**
@@ -72,15 +63,6 @@ class MailCreator implements MailCreatorInterface
             $content->setMail($mail);
         }
 
-        if ($this->validator->validate($mail) === false) {
-            throw new BadRequestHttpException($this->validator->getErrorMessage());
-        }
-
-        $this->em->persist($mail->getRecipient());
-        $this->em->persist($mail);
-        $this->em->flush();
-        $this->em->refresh($mail);
-
-        return $mail;
+        return $this->mailSaver->save($mail);
     }
 }
