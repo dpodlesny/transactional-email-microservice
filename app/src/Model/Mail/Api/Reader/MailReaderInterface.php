@@ -6,6 +6,9 @@ namespace App\Model\Mail\Api\Reader;
 interface MailReaderInterface
 {
     /**
+     * Specification:
+     *  - Returns paginated list of Mail objects.
+     *
      * @param int $page
      *
      * @return array
