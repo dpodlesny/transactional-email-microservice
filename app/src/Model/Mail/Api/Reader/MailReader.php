@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Model\Mail\Api\Reader;
 
+use App\Entity\Mail;
 use App\Model\Mail\MailConfig;
 use App\Repository\MailRepository;
 
@@ -36,7 +37,7 @@ class MailReader implements MailReaderInterface
     /**
      * @param int $page
      *
-     * @return array<string, int|array>
+     * @return array<int|string, array<Mail>|int>
      */
     public function findPaginated(int $page = 1): array
     {
