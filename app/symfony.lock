@@ -181,6 +181,15 @@
     "justinrainbow/json-schema": {
         "version": "5.2.10"
     },
+    "laminas/laminas-code": {
+        "version": "3.4.1"
+    },
+    "laminas/laminas-eventmanager": {
+        "version": "3.3.0"
+    },
+    "laminas/laminas-zendframework-bridge": {
+        "version": "1.1.1"
+    },
     "mailjet/mailjet-apiv3-php": {
         "version": "v1.5.0"
     },
@@ -222,6 +231,12 @@
     },
     "phpstan/phpstan": {
         "version": "0.12.50"
+    },
+    "phpstan/phpstan-doctrine": {
+        "version": "0.12.22"
+    },
+    "phpstan/phpstan-symfony": {
+        "version": "0.12.11"
     },
     "phpunit/php-code-coverage": {
         "version": "9.2.3"
@@ -583,6 +598,9 @@
     },
     "theseer/tokenizer": {
         "version": "1.2.0"
+    },
+    "webimpress/safe-writer": {
+        "version": "2.1.0"
     },
     "webmozart/assert": {
         "version": "1.9.1"
