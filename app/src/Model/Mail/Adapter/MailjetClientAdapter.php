@@ -15,9 +15,15 @@ class MailjetClientAdapter implements MailClientAdapterInterface
      */
     protected Client $mailjetClient;
 
+    /**
+     * @var MailConfig
+     */
+    protected MailConfig $mailConfig;
+
     public function __construct(
         string $mailjetApiKeyPublic,
-        string $mailjetApiKeyPrivate
+        string $mailjetApiKeyPrivate,
+        MailConfig $mailConfig
     ) {
         $this->mailjetClient = new Client(
             $mailjetApiKeyPublic,
@@ -25,6 +31,7 @@ class MailjetClientAdapter implements MailClientAdapterInterface
             true,
             ['version' => 'v3.1']
         );
+        $this->mailConfig = $mailConfig;
     }
 
     /**
@@ -62,8 +69,8 @@ class MailjetClientAdapter implements MailClientAdapterInterface
             'Messages' => [
                 [
                     'From' => [
-                        'Email' => MailConfig::getFromEmail(),
-                        'Name' => MailConfig::getFromName(),
+                        'Email' => $this->mailConfig->getFromEmail(),
+                        'Name' => $this->mailConfig->getFromName(),
                     ],
                     'To' => [
                         [

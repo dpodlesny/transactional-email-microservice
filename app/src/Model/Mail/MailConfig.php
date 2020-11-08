@@ -18,7 +18,7 @@ class MailConfig
     /**
      * @return string[]
      */
-    public static function getAllowedContentTypes(): array
+    public function getAllowedContentTypes(): array
     {
         return static::ALLOWED_CONTENT_TYPES;
     }
@@ -26,7 +26,7 @@ class MailConfig
     /**
      * @return int
      */
-    public static function getPageSize(): int
+    public function getPageSize(): int
     {
         return static::PAGE_SIZE;
     }
@@ -34,7 +34,7 @@ class MailConfig
     /**
      * @return string
      */
-    public static function getFromName(): string
+    public function getFromName(): string
     {
         return 'Dennis Underwood';
     }
@@ -42,7 +42,7 @@ class MailConfig
     /**
      * @return string
      */
-    public static function getFromEmail(): string
+    public function getFromEmail(): string
     {
         return 'underwood.dv@gmail.com';
     }
@@ -50,7 +50,7 @@ class MailConfig
     /**
      * @return string
      */
-    public static function getQueueName(): string
+    public function getQueueName(): string
     {
         return 'queue.mail';
     }
@@ -58,7 +58,7 @@ class MailConfig
     /**
      * @return string
      */
-    public static function getQueueExchangeName(): string
+    public function getQueueExchangeName(): string
     {
         return 'router';
     }
@@ -66,7 +66,7 @@ class MailConfig
     /**
      * @return string
      */
-    public static function getQueueConsumerTag(): string
+    public function getQueueConsumerTag(): string
     {
         return 'consumer';
     }

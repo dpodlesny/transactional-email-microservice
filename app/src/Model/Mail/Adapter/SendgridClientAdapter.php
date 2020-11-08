@@ -17,11 +17,18 @@ class SendgridClientAdapter implements MailClientAdapterInterface
     protected SendGrid $sendGridClient;
 
     /**
-     * @param string $sendGridApiKey
+     * @var MailConfig
      */
-    public function __construct(string $sendGridApiKey)
+    protected MailConfig $mailConfig;
+
+    /**
+     * @param string $sendGridApiKey
+     * @param MailConfig $mailConfig
+     */
+    public function __construct(string $sendGridApiKey, MailConfig $mailConfig)
     {
         $this->sendGridClient = new SendGrid($sendGridApiKey);
+        $this->mailConfig = $mailConfig;
     }
 
     /**
@@ -32,7 +39,7 @@ class SendgridClientAdapter implements MailClientAdapterInterface
     public function send(Mail $mail): bool
     {
         $email = new SendGridMail();
-        $email->setFrom(MailConfig::getFromEmail(), MailConfig::getFromName());
+        $email->setFrom($this->mailConfig->getFromEmail(), $this->mailConfig->getFromName());
         $email->setSubject($mail->getSubject());
         $email->addTo($mail->getRecipient()->getEmail(), $mail->getRecipient()->getName());
 
