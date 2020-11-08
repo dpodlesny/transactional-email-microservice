@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Model\Mail\Api\Creator;
@@ -82,13 +83,13 @@ class MailCreator implements MailCreatorInterface
             $content->setMail($mail);
         }
 
+        $mail = $this->mailSaver->save($mail);
+
         $encodedMessageBody = json_encode(['mail_id' => $mail->getId()]);
 
         if ($encodedMessageBody === false) {
-            throw new JsonException('Error while encoding json.');
+            throw new JsonException('Error happened while processing mail. Please try again.');
         }
-
-        $mail = $this->mailSaver->save($mail);
 
         $this->queuePublisher->publish(
             $this->mailConfig->getQueueName(),
