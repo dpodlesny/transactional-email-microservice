@@ -94,7 +94,7 @@ class MailCreateCommand extends Command
         $this->fillContents($mail);
 
         $addAdditionalRecipientQuestion = new ConfirmationQuestion(
-            'Do you want to add additional recipients?(yes/no)'.PHP_EOL,
+            'Do you want to add additional recipients?(yes/no)' . PHP_EOL,
             false
         );
 
@@ -122,7 +122,7 @@ class MailCreateCommand extends Command
      */
     protected function fillSubject(Mail $mail): Mail
     {
-        $subjectQuestion = new Question('Please enter the subject of the mail'.PHP_EOL);
+        $subjectQuestion = new Question('Please enter the subject of the mail' . PHP_EOL);
         $this->addStringValidationToQuestion($subjectQuestion);
         $subject = $this->questionHelper->ask($this->input, $this->output, $subjectQuestion);
         $mail->setSubject($subject);
@@ -151,12 +151,12 @@ class MailCreateCommand extends Command
     {
         $recipient = new Recipient();
 
-        $recipientNameQuestion = new Question('Please enter the name of the recipient'.PHP_EOL);
+        $recipientNameQuestion = new Question('Please enter the name of the recipient' . PHP_EOL);
         $this->addStringValidationToQuestion($recipientNameQuestion);
         $recipientName = $this->questionHelper->ask($this->input, $this->output, $recipientNameQuestion);
         $recipient->setName($recipientName);
 
-        $recipientEmailQuestion = new Question('Please enter the email of the recipient'.PHP_EOL);
+        $recipientEmailQuestion = new Question('Please enter the email of the recipient' . PHP_EOL);
         $this->addEmailValidationToQuestion($recipientEmailQuestion);
         $recipientEmail = $this->questionHelper->ask($this->input, $this->output, $recipientEmailQuestion);
 
@@ -185,14 +185,14 @@ class MailCreateCommand extends Command
         $type = $this->questionHelper->ask($this->input, $this->output, $typeQuestion);
         $content->setType($type);
 
-        $bodyQuestion = new Question('Please enter the body of the mail'.PHP_EOL);
+        $bodyQuestion = new Question('Please enter the body of the mail' . PHP_EOL);
         $this->addStringValidationToQuestion($bodyQuestion);
         $body = $this->questionHelper->ask($this->input, $this->output, $bodyQuestion);
         $content->setContent($body);
 
         $mail->addContent($content);
 
-        $addAdditionalContentQuestion = new ConfirmationQuestion('Add additional content?(yes/no)'.PHP_EOL, false);
+        $addAdditionalContentQuestion = new ConfirmationQuestion('Add additional content?(yes/no)' . PHP_EOL, false);
 
         if ($this->questionHelper->ask($this->input, $this->output, $addAdditionalContentQuestion)) {
             $this->fillContents($mail);
@@ -213,7 +213,7 @@ class MailCreateCommand extends Command
         $mail->addAdditionalRecipient($recipient);
 
         $addAdditionalRecipientQuestion = new ConfirmationQuestion(
-            'Add additional recipient?(yes/no)'.PHP_EOL,
+            'Add additional recipient?(yes/no)' . PHP_EOL,
             false
         );
 
