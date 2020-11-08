@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Tests;
@@ -7,6 +8,11 @@ use Codeception\Util\HttpCode;
 
 class MailListPositiveCest
 {
+    /**
+     * @param ApiTester $I
+     *
+     * @return void
+     */
     public function testGetEmptyMailList(ApiTester $I): void
     {
         $I->setHeaders();
@@ -22,6 +28,11 @@ class MailListPositiveCest
         );
     }
 
+    /**
+     * @param ApiTester $I
+     *
+     * @return void
+     */
     public function testGetNotEmptyMailList(ApiTester $I): void
     {
         $I->setHeaders();

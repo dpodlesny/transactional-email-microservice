@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Tests;
@@ -8,6 +9,11 @@ use Codeception\Util\HttpCode;
 
 class MailCreateNegativeCest
 {
+    /**
+     * @param ApiTester $I
+     *
+     * @return void
+     */
     public function testCreateMailWithoutSubject(ApiTester $I): void
     {
         $I->declareQueue($I->getMailQueueName(), false, true, false, false);
@@ -51,6 +57,11 @@ class MailCreateNegativeCest
         $I->seeQueueIsEmpty($I->getMailQueueName());
     }
 
+    /**
+     * @param ApiTester $I
+     *
+     * @return void
+     */
     public function testCreateMailWithoutRecipient(ApiTester $I): void
     {
         $I->setHeaders();
@@ -90,6 +101,11 @@ class MailCreateNegativeCest
         $I->seeQueueIsEmpty($I->getMailQueueName());
     }
 
+    /**
+     * @param ApiTester $I
+     *
+     * @return void
+     */
     public function testCreateMailWithoutRecipientName(ApiTester $I): void
     {
         $I->setHeaders();
@@ -133,6 +149,11 @@ class MailCreateNegativeCest
         $I->seeNumberOfMessagesInQueue($I->getMailQueueName(), 0);
     }
 
+    /**
+     * @param ApiTester $I
+     *
+     * @return void
+     */
     public function testCreateMailWithoutRecipientEmail(ApiTester $I): void
     {
         $I->setHeaders();
@@ -176,6 +197,11 @@ class MailCreateNegativeCest
         $I->seeNumberOfMessagesInQueue($I->getMailQueueName(), 0);
     }
 
+    /**
+     * @param ApiTester $I
+     *
+     * @return void
+     */
     public function testCreateMailWithoutContents(ApiTester $I): void
     {
         $I->setHeaders();
@@ -210,6 +236,11 @@ class MailCreateNegativeCest
         $I->seeNumberOfMessagesInQueue($I->getMailQueueName(), 0);
     }
 
+    /**
+     * @param ApiTester $I
+     *
+     * @return void
+     */
     public function testCreateMailWithoutContentsType(ApiTester $I): void
     {
         $I->setHeaders();
@@ -253,6 +284,11 @@ class MailCreateNegativeCest
         $I->seeNumberOfMessagesInQueue($I->getMailQueueName(), 0);
     }
 
+    /**
+     * @param ApiTester $I
+     *
+     * @return void
+     */
     public function testCreateMailWithoutContentsContent(ApiTester $I): void
     {
         $I->setHeaders();
@@ -296,6 +332,11 @@ class MailCreateNegativeCest
         $I->seeNumberOfMessagesInQueue($I->getMailQueueName(), 0);
     }
 
+    /**
+     * @param ApiTester $I
+     *
+     * @return void
+     */
     public function testCreateMailWithoutAdditionalRecipientName(
         ApiTester $I
     ): void {
@@ -340,6 +381,11 @@ class MailCreateNegativeCest
         $I->seeNumberOfMessagesInQueue($I->getMailQueueName(), 0);
     }
 
+    /**
+     * @param ApiTester $I
+     *
+     * @return void
+     */
     public function testCreateMailWithoutAdditionalRecipientEmail(
         ApiTester $I
     ): void {

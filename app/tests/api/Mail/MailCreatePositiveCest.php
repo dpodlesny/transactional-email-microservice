@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Tests;
@@ -8,6 +9,11 @@ use Codeception\Util\HttpCode;
 
 class MailCreatePositiveCest
 {
+    /**
+     * @param ApiTester $I
+     *
+     * @return void
+     */
     public function testCreateMailWithAllFields(ApiTester $I): void
     {
         $I->purgeQueue($I->getMailQueueName());
@@ -87,6 +93,11 @@ class MailCreatePositiveCest
         $I->purgeQueue($I->getMailQueueName());
     }
 
+    /**
+     * @param ApiTester $I
+     *
+     * @return void
+     */
     public function testCreateMailWithMinimumFields(ApiTester $I): void
     {
         $I->purgeQueue($I->getMailQueueName());
