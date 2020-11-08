@@ -15,20 +15,20 @@ class MailSender implements MailSenderInterface
     protected MailClientAdapterInterface $mainMailClient;
 
     /**
-     * @var MailClientAdapterInterface[]
+     * @var array<MailClientAdapterInterface>
      */
     protected array $fallbackMailClients;
 
     /**
-     * @param MailClientAdapterInterface $mainAdapter
-     * @param MailClientAdapterInterface[] $fallbackMailAdapter
+     * @param MailClientAdapterInterface $mainMailClient
+     * @param array<MailClientAdapterInterface> $fallbackMailClients
      */
     public function __construct(
-        MailClientAdapterInterface $mainAdapter,
-        array $fallbackMailAdapter
+        MailClientAdapterInterface $mainMailClient,
+        array $fallbackMailClients
     ) {
-        $this->mainMailClient = $mainAdapter;
-        $this->fallbackMailClients = $fallbackMailAdapter;
+        $this->mainMailClient = $mainMailClient;
+        $this->fallbackMailClients = $fallbackMailClients;
     }
 
     /**
