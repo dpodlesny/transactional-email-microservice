@@ -23,16 +23,21 @@ class MailCreateCommand extends Command
     protected static $defaultName = 'mail:create';
 
     protected MailSaverInterface $mailSaver;
+    protected MailConfig $mailConfig;
     protected InputInterface $input;
     protected OutputInterface $output;
     protected QuestionHelper $questionHelper;
 
     /**
      * @param MailSaverInterface $mailSaver
+     * @param MailConfig $mailConfig
      */
-    public function __construct(MailSaverInterface $mailSaver)
-    {
+    public function __construct(
+        MailSaverInterface $mailSaver,
+        MailConfig $mailConfig
+    ) {
         $this->mailSaver = $mailSaver;
+        $this->mailConfig = $mailConfig;
 
         parent::__construct();
     }
@@ -149,7 +154,7 @@ class MailCreateCommand extends Command
 
         $typeQuestion = new ChoiceQuestion(
             'Please select type of the content',
-            MailConfig::getAllowedContentTypes(),
+            $this->mailConfig->getAllowedContentTypes(),
             0
         );
 
