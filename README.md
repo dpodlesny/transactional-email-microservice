@@ -84,7 +84,7 @@ To use cli from docker container use:
 To create mail request enter command below and follow the instructions.
 
 ```
-docker-compose run --rm transactional-email-service-php-cli php bin/console mail:create
+docker-compose run --rm transactional-email-service-php-cli php bin/console mail:create:manual
 ```
 
 To run queue consumer use command below.

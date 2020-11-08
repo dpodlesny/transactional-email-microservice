@@ -21,7 +21,7 @@ use Throwable;
 
 class MailCreateCommand extends Command
 {
-    protected static $defaultName = 'mail:create';
+    protected static $defaultName = 'mail:create:manual';
 
     protected MailSaverInterface $mailSaver;
     protected MailConfig $mailConfig;
