@@ -40,16 +40,16 @@ services:
             - '%env(RABBITMQ_USER)%'
             - '%env(RABBITMQ_PASSWORD)%'
 
-    App\Model\Mail\Adapter\SendgridAdapter:
+    App\Model\Mail\Adapter\SendgridClientAdapter:
         arguments:
             - '%env(SENDGRID_API_KEY)%'
 
-    App\Model\Mail\Adapter\MailjetAdapter:
+    App\Model\Mail\Adapter\MailjetClientAdapter:
         arguments:
             - '%env(MJ_APIKEY_PUBLIC)%'
             - '%env(MJ_APIKEY_PRIVATE)%'
 
     App\Model\Mail\Sender\MailSender:
         arguments:
-            - '@App\Model\Mail\Adapter\SendgridAdapter'
-            - ['@App\Model\Mail\Adapter\MailjetAdapter']
+            - '@App\Model\Mail\Adapter\SendgridClientAdapter'
+            - ['@App\Model\Mail\Adapter\MailjetClientAdapter']
