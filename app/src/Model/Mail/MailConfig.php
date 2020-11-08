@@ -17,9 +17,11 @@ class MailConfig
     ];
 
     /**
-     * @return string[]
+     * @uses \App\Entity\Content::$type
+     *
+     * @return array<string>
      */
-    public function getAllowedContentTypes(): array
+    public static function getAllowedContentTypes(): array
     {
         return static::ALLOWED_CONTENT_TYPES;
     }
