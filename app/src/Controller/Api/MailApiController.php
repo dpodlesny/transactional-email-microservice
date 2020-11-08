@@ -7,7 +7,6 @@ use App\Model\Mail\Api\Creator\MailCreatorInterface;
 use App\Model\Mail\Api\Reader\MailReaderInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
 class MailApiController extends BaseApiController
@@ -44,14 +43,8 @@ class MailApiController extends BaseApiController
         Request $request,
         MailCreatorInterface $mailCreator
     ): Response {
-        $requestContent = $request->getContent();
-
-        if (is_string($requestContent) === false) {
-            throw new BadRequestHttpException();
-        }
-
         $mail = $mailCreator->createFromType(
-            $requestContent,
+            $request->getContent(),
             $request->getContentType() ?? 'json'
         );
 
