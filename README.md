@@ -6,7 +6,7 @@ Docker
 
 PHP 7.4
 
-MYSQL
+MYSQL 8
 
 Symfony 5
 
@@ -16,11 +16,13 @@ PHPStan: level 8
 
 PSR12
 
+Mail Clients: SendGrid, Mailjet
+
 ## Description
 
 This service allows sending emails via API or CLI(see below for examples).
 
-SendGrid is a main mail service by default, in case if SendGrid is not available one of the fallback mail services will be used (Mailjet by default).
+SendGrid is a main mail client by default, in case if SendGrid is not available one of the fallback mail clients will be used (Mailjet by default).
  
 To change main mail client or to add a new fallback client you need to introduce new MailClientAdapter by implementing ```App\Model\Mail\Adapter\MailClientAdapterInterface``` and update needed arguments of ```App\Model\Mail\Sender\MailSender``` in ```services.yml:55```.
 
@@ -75,23 +77,23 @@ Password: guest
 
 ## CLI
 
-To use cli from docker container use:
+To use ```cli in docker``` container use:
 
     $ docker-compose run --rm transactional-email-service-php-cli
 
-To manual create mail request enter command below and follow the instructions.
+To ```create mail request manually``` enter command below and follow the instructions.
 
 ```
 docker-compose run --rm transactional-email-service-php-cli php bin/console mail:create:manual
 ```
 
-To create mail request from json use command below.
+To ```create mail request from json``` use command below.
 
 ```
 docker-compose run --rm transactional-email-service-php-cli php bin/console mail:create:from-type json "{\"subject\": \"subject\", \"recipient\": {\"name\": \"name\", \"email\": \"test@test.com\"}, \"contents\": [{\"type\": \"text/html\", \"content\": \"test\"}, {\"type\": \"text/plain\", \"content\": \"test\"}], \"additionalRecipients\": [{\"name\": \"name 1\", \"email\": \"test+1@test.com\"}, {\"name\": \"name 2\", \"email\": \"test+2@test.com\"}]}"
 ```
 
-To run queue consumer use command below.
+To run ```queue consumer``` use command below.
 
 ```
 docker-compose run --rm transactional-email-service-php-cli php bin/console mail:consumer:consume
