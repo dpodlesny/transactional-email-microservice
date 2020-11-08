@@ -113,12 +113,6 @@ class MailConsumerCommand extends Command
         $this->output->writeln('Message received...');
         $this->output->writeln($message->body);
 
-        $message->ack();
-
-        if ($message->body === 'quit') {
-            $message->getChannel()->basic_cancel($message->getConsumerTag());
-        }
-
         $body = json_decode($message->body, true);
 
         if (isset($body['mail_id']) === false) {
@@ -140,6 +134,8 @@ class MailConsumerCommand extends Command
             $mail->markAsSentAt();
 
             $this->mailSaver->save($mail);
+
+            return;
         }
 
         $this->output->writeln('Some error happened while sending mail.');
