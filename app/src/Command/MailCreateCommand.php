@@ -44,7 +44,7 @@ class MailCreateCommand extends Command
 
     protected function configure(): void
     {
-        $this->setDescription('Creates a mail.');
+        $this->setDescription('Creates a mail with manual input parameters.');
     }
 
     /**
