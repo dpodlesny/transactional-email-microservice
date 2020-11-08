@@ -4,7 +4,9 @@ declare(strict_types=1);
 namespace App\Model\Mail\Api\Creator;
 
 use App\Entity\Mail;
+use App\Model\Mail\MailConfig;
 use App\Model\Mail\Saver\MailSaverInterface;
+use App\Model\Queue\Publisher\QueuePublisherInterface;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Serializer\SerializerInterface;
 use Throwable;
@@ -22,15 +24,31 @@ class MailCreator implements MailCreatorInterface
     protected MailSaverInterface $mailSaver;
 
     /**
+     * @var MailConfig
+     */
+    protected MailConfig $mailConfig;
+
+    /**
+     * @var QueuePublisherInterface
+     */
+    protected QueuePublisherInterface $queuePublisher;
+
+    /**
      * @param SerializerInterface $serializer
      * @param MailSaverInterface $mailSaver
+     * @param MailConfig $mailConfig
+     * @param QueuePublisherInterface $queuePublisher
      */
     public function __construct(
         SerializerInterface $serializer,
-        MailSaverInterface $mailSaver
+        MailSaverInterface $mailSaver,
+        MailConfig $mailConfig,
+        QueuePublisherInterface $queuePublisher
     ) {
         $this->serializer = $serializer;
         $this->mailSaver = $mailSaver;
+        $this->mailConfig = $mailConfig;
+        $this->queuePublisher = $queuePublisher;
     }
 
     /**
@@ -63,6 +81,14 @@ class MailCreator implements MailCreatorInterface
             $content->setMail($mail);
         }
 
-        return $this->mailSaver->save($mail);
+        $mail = $this->mailSaver->save($mail);
+
+        $this->queuePublisher->publish(
+            $this->mailConfig->getQueueName(),
+            $this->mailConfig->getQueueExchangeName(),
+            json_encode(['mail_id' => $mail->getId()])
+        );
+
+        return $mail;
     }
 }
