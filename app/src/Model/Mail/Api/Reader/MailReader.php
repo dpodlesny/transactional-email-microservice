@@ -17,11 +17,20 @@ class MailReader implements MailReaderInterface
     protected MailRepository $mailRepository;
 
     /**
-     * @param MailRepository $mailRepository
+     * @var MailConfig
      */
-    public function __construct(MailRepository $mailRepository)
-    {
+    protected MailConfig $mailConfig;
+
+    /**
+     * @param MailRepository $mailRepository
+     * @param MailConfig $mailConfig
+     */
+    public function __construct(
+        MailRepository $mailRepository,
+        MailConfig $mailConfig
+    ) {
         $this->mailRepository = $mailRepository;
+        $this->mailConfig = $mailConfig;
     }
 
     /**
@@ -31,7 +40,7 @@ class MailReader implements MailReaderInterface
      */
     public function findPaginated(int $page = 1): array
     {
-        $limit = MailConfig::getPageSize();
+        $limit = $this->mailConfig->getPageSize();
         $offset = $limit * ($page - 1);
 
         return [
