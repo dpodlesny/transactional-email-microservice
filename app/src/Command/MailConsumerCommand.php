@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Command;
@@ -71,7 +72,13 @@ class MailConsumerCommand extends Command
         $output->writeln('Waiting for messages...');
 
         $channel->queue_declare($this->mailConfig->getQueueName(), false, true, false, false);
-        $channel->exchange_declare($this->mailConfig->getQueueExchangeName(), AMQPExchangeType::DIRECT, false, true, false);
+        $channel->exchange_declare(
+            $this->mailConfig->getQueueExchangeName(),
+            AMQPExchangeType::DIRECT,
+            false,
+            true,
+            false
+        );
         $channel->queue_bind($this->mailConfig->getQueueName(), $this->mailConfig->getQueueExchangeName());
         $channel->basic_consume(
             $this->mailConfig->getQueueName(),

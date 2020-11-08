@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Model\Mail\Validator;
@@ -44,7 +45,7 @@ class MailValidator implements MailValidatorInterface
         $this->errorMessage = '';
 
         foreach ($errors as $violation) {
-            $this->errorMessage .= $violation->getPropertyPath().': '.$violation->getMessage()."\n";
+            $this->errorMessage .= $violation->getPropertyPath() . ': ' . $violation->getMessage() . "\n";
         }
 
         return false;

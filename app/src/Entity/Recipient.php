@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Entity;
@@ -53,7 +54,7 @@ class Recipient
     private string $name;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Mail::class, inversedBy="recipients")
+     * @ORM\ManyToOne(targetEntity=Mail::class, inversedBy="additionalRecipients")
      *
      * @var Mail|null
      */

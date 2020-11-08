@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Model\Api\Listener;
@@ -38,7 +39,11 @@ class ExceptionListener
      */
     private function createApiResponse(Throwable $exception): JsonResponse
     {
-        $statusCode = $exception instanceof HttpExceptionInterface ? $exception->getStatusCode() : Response::HTTP_BAD_REQUEST;
+        $statusCode = Response::HTTP_BAD_REQUEST;
+
+        if ($exception instanceof HttpExceptionInterface) {
+            $statusCode = $exception->getStatusCode();
+        }
 
         return new JsonResponse([self::KEY_MESSAGE => $exception->getMessage()], $statusCode);
     }
