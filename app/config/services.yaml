@@ -35,21 +35,21 @@ services:
 
     App\Model\Queue\QueueConfig:
         arguments:
-            - '%env(RABBITMQ_HOST)%'
-            - '%env(RABBITMQ_PORT)%'
-            - '%env(RABBITMQ_USER)%'
-            - '%env(RABBITMQ_PASSWORD)%'
+            $host: '%env(RABBITMQ_HOST)%'
+            $port: '%env(RABBITMQ_PORT)%'
+            $user: '%env(RABBITMQ_USER)%'
+            $password: '%env(RABBITMQ_PASSWORD)%'
 
     App\Model\Mail\Adapter\SendgridClientAdapter:
         arguments:
-            - '%env(SENDGRID_API_KEY)%'
+            $sendGridApiKey: '%env(SENDGRID_API_KEY)%'
 
     App\Model\Mail\Adapter\MailjetClientAdapter:
         arguments:
-            - '%env(MJ_APIKEY_PUBLIC)%'
-            - '%env(MJ_APIKEY_PRIVATE)%'
+            $mailjetApiKeyPublic: '%env(MJ_APIKEY_PUBLIC)%'
+            $mailjetApiKeyPrivate: '%env(MJ_APIKEY_PRIVATE)%'
 
     App\Model\Mail\Sender\MailSender:
         arguments:
-            - '@App\Model\Mail\Adapter\SendgridClientAdapter'
-            - ['@App\Model\Mail\Adapter\MailjetClientAdapter']
+            $mainMailClient: '@App\Model\Mail\Adapter\SendgridClientAdapter'
+            $fallbackMailClients: ['@App\Model\Mail\Adapter\MailjetClientAdapter']
