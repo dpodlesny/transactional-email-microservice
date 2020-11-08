@@ -26,7 +26,7 @@ To change main mail client or to add a new fallback client you need to introduce
 
 Business logic based on SOLID principles and stored in ```App/Model``` namespace to facilitate maintenance and extension.
 
-Module configuration stored in ```ModuleConfig``` class to keep all module configuration in one place.
+Module configuration stored in ```*Module*Config``` class to keep all module configuration in one place.
 
 ## Setup
 
@@ -79,12 +79,16 @@ To use cli from docker container use:
 
     $ docker-compose run --rm transactional-email-service-php-cli
 
-## CLI Examples
-
-To create mail request enter command below and follow the instructions.
+To manual create mail request enter command below and follow the instructions.
 
 ```
 docker-compose run --rm transactional-email-service-php-cli php bin/console mail:create:manual
+```
+
+To create mail request from json use command below.
+
+```
+docker-compose run --rm transactional-email-service-php-cli php bin/console mail:create:from-type json "{\"subject\": \"subject\", \"recipient\": {\"name\": \"name\", \"email\": \"test@test.com\"}, \"contents\": [{\"type\": \"text/html\", \"content\": \"test\"}, {\"type\": \"text/plain\", \"content\": \"test\"}], \"additionalRecipients\": [{\"name\": \"name 1\", \"email\": \"test+1@test.com\"}, {\"name\": \"name 2\", \"email\": \"test+2@test.com\"}]}"
 ```
 
 To run queue consumer use command below.
