@@ -1,16 +1,40 @@
-## Transactional Email Microservice ##
+# Email Microservice #
 
-**> Info <**
+## Compatibility
 
-This service allows sending emails via API or CLI(see below for examples). Service will try to send an email via SendGrid as the main service in case if SendGrid is not available Service will try to send mail via one of the fallbacks mail services(Mailjet by default). You can add an additional fallback service by implementing ```App\Model\Mail\Adapter\MailAdapterInterface``` and add a new service to ```App\Model\Mail\Sender\MailSender``` as the second argument in ```service.yml:55```
+Docker
 
-**> Init <**
+PHP 7.4
 
-Init docker containers
+MYSQL
+
+Symfony 5
+
+RabbitMQ
+
+PHPStan: level 8
+
+PSR12
+
+## Description
+
+This service allows sending emails via API or CLI(see below for examples).
+
+SendGrid is a main mail service by default, in case if SendGrid is not available one of the fallback mail services will be used (Mailjet by default).
+ 
+To change main mail client or to add a new fallback client you need to introduce new MailClientAdapter by implementing ```App\Model\Mail\Adapter\MailClientAdapterInterface``` and update needed arguments of ```App\Model\Mail\Sender\MailSender``` in ```services.yml:55```.
+
+Business logic based on SOLID principles and stored in ```App/Model``` namespace to facilitate maintenance and extension.
+
+Module configuration stored in ```ModuleConfig``` class to keep all module configuration in one place.
+
+## Setup
+
+Init project
 
     $ make init
 
-Set yours API keys from mailjet and sendgrid in .env
+Set yours API keys from mailjet and sendgrid in .env and .env.test
 
 ```
 ###> mailjet ###
@@ -23,11 +47,15 @@ SENDGRID_API_KEY='Enter your sendgrid api key'
 ###< sendgrid ###
 ```
 
-**> Access <**
+To run full validation use:
+
+    $ make validate
+
+## Access
 
 [localhost:8088](http://localhost:8088)
 
-**> DB Connection <**
+## DB Connection
 
 Host: localhost
 
@@ -37,7 +65,7 @@ User: user
 
 Password: password
 
-**> Redis Connection <**
+## RabbitMQ Connection
 
 [localhost:15672](http://localhost:15672)
 
@@ -45,13 +73,13 @@ User: guest
 
 Password: guest
 
-**> CLI <**:
+## CLI
 
 To use cli from docker container use:
 
     $ docker-compose run --rm transactional-email-service-php-cli
 
-**> CLI Example <**
+## CLI Examples
 
 To create mail request enter command below and follow the instructions.
 
@@ -65,7 +93,7 @@ To run queue consumer use command below.
 docker-compose run --rm transactional-email-service-php-cli php bin/console mail:consumer:consume
 ```
 
-**> API Example <**
+## API Examples
 
 Get paginated list of mails
 
