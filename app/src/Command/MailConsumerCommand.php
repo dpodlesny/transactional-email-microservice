@@ -24,10 +24,29 @@ class MailConsumerCommand extends Command
     protected InputInterface $input;
     protected OutputInterface $output;
 
+    /**
+     * @var QueueFactory
+     */
     protected QueueFactory $queueFactory;
+
+    /**
+     * @var MailConfig
+     */
     protected MailConfig $mailConfig;
+
+    /**
+     * @var MailSenderInterface
+     */
     protected MailSenderInterface $mailSender;
+
+    /**
+     * @var MailRepository
+     */
     protected MailRepository $mailRepository;
+
+    /**
+     * @var MailSaverInterface
+     */
     protected MailSaverInterface $mailSaver;
 
     /**
