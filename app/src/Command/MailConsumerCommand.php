@@ -52,7 +52,7 @@ class MailConsumerCommand extends Command
         parent::__construct();
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setDescription('Consumes messages from mail queue. Sends mail with different mail services.');
