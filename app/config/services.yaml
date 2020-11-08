@@ -32,3 +32,24 @@ services:
     App\Model\Api\Listener\ExceptionListener:
         tags:
             - { name: kernel.event_listener, event: kernel.exception }
+
+    App\Model\Queue\QueueConfig:
+        arguments:
+            - '%env(RABBITMQ_HOST)%'
+            - '%env(RABBITMQ_PORT)%'
+            - '%env(RABBITMQ_USER)%'
+            - '%env(RABBITMQ_PASSWORD)%'
+
+    App\Model\Mail\Adapter\SendgridAdapter:
+        arguments:
+            - '%env(SENDGRID_API_KEY)%'
+
+    App\Model\Mail\Adapter\MailjetAdapter:
+        arguments:
+            - '%env(MJ_APIKEY_PUBLIC)%'
+            - '%env(MJ_APIKEY_PRIVATE)%'
+
+    App\Model\Mail\Sender\MailSender:
+        arguments:
+            - '@App\Model\Mail\Adapter\SendgridAdapter'
+            - ['@App\Model\Mail\Adapter\MailjetAdapter']
