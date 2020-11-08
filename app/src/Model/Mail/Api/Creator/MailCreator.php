@@ -7,6 +7,7 @@ use App\Entity\Mail;
 use App\Model\Mail\MailConfig;
 use App\Model\Mail\Saver\MailSaverInterface;
 use App\Model\Queue\Publisher\QueuePublisherInterface;
+use JsonException;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Serializer\SerializerInterface;
 use Throwable;
@@ -81,12 +82,18 @@ class MailCreator implements MailCreatorInterface
             $content->setMail($mail);
         }
 
+        $encodedMessageBody = json_encode(['mail_id' => $mail->getId()]);
+
+        if ($encodedMessageBody === false) {
+            throw new JsonException('Error while encoding json.');
+        }
+
         $mail = $this->mailSaver->save($mail);
 
         $this->queuePublisher->publish(
             $this->mailConfig->getQueueName(),
             $this->mailConfig->getQueueExchangeName(),
-            json_encode(['mail_id' => $mail->getId()])
+            $encodedMessageBody
         );
 
         return $mail;
