@@ -9,12 +9,10 @@ class MailConfig
 
     public const CONTENT_TYPE_HTML = 'text/html';
     public const CONTENT_TYPE_TEXT = 'text/plain';
-    public const CONTENT_TYPE_MARKDOWN = 'text/markdown';
 
     protected const ALLOWED_CONTENT_TYPES = [
         self::CONTENT_TYPE_HTML,
         self::CONTENT_TYPE_TEXT,
-        self::CONTENT_TYPE_MARKDOWN,
     ];
 
     /**
@@ -31,5 +29,45 @@ class MailConfig
     public static function getPageSize(): int
     {
         return static::PAGE_SIZE;
+    }
+
+    /**
+     * @return string
+     */
+    public static function getFromName(): string
+    {
+        return 'Dennis Underwood';
+    }
+
+    /**
+     * @return string
+     */
+    public static function getFromEmail(): string
+    {
+        return 'underwood.dv@gmail.com';
+    }
+
+    /**
+     * @return string
+     */
+    public static function getQueueName(): string
+    {
+        return 'queue.mail';
+    }
+
+    /**
+     * @return string
+     */
+    public static function getQueueExchangeName(): string
+    {
+        return 'router';
+    }
+
+    /**
+     * @return string
+     */
+    public static function getQueueConsumerTag(): string
+    {
+        return 'consumer';
     }
 }
