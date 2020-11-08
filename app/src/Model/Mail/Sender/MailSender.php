@@ -8,6 +8,9 @@ use App\Model\Mail\Adapter\MailClientAdapterInterface;
 
 class MailSender implements MailSenderInterface
 {
+    /**
+     * @var MailClientAdapterInterface
+     */
     protected MailClientAdapterInterface $mainMailClient;
 
     /**

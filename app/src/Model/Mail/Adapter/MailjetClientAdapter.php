@@ -20,6 +20,11 @@ class MailjetClientAdapter implements MailClientAdapterInterface
      */
     protected MailConfig $mailConfig;
 
+    /**
+     * @param string $mailjetApiKeyPublic
+     * @param string $mailjetApiKeyPrivate
+     * @param MailConfig $mailConfig
+     */
     public function __construct(
         string $mailjetApiKeyPublic,
         string $mailjetApiKeyPrivate,
