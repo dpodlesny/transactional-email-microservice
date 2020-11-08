@@ -1,20 +1,33 @@
-# Transactional Email Microservice #
+## Transactional Email Microservice ##
 
-## Info ##
+**> Info <**
 
-Service allows to send emails via API or CLI
+This service allows sending emails via API or CLI(see below for examples). Service will try to send an email via SendGrid as the main service in case if SendGrid is not available Service will try to send mail via one of the fallbacks mail services(Mailjet by default). You can add an additional fallback service by implementing ```App\Model\Mail\Adapter\MailAdapterInterface``` and add a new service to ```App\Model\Mail\Sender\MailSender``` as the second argument in ```service.yml:55```
 
-## Commands ##
+**> Init <**
 
-**Init docker containers:**
+Init docker containers
 
     $ make init
 
-**URL**
+Set yours API keys from mailjet and sendgrid in .env
+
+```
+###> mailjet ###
+MJ_APIKEY_PUBLIC='Enter your mailjet api key public'
+MJ_APIKEY_PRIVATE='Enter your mailjet api key private'
+###< mailjet ###
+
+###> sendgrid ###
+SENDGRID_API_KEY='Enter your sendgrid api key'
+###< sendgrid ###
+```
+
+**> Access <**
 
 [localhost:8088](http://localhost:8088)
 
-**DB**
+**> DB Connection <**
 
 Host: localhost
 
@@ -24,19 +37,35 @@ User: user
 
 Password: password
 
-**CLI**:
+**> Redis Connection <**
+
+[localhost:15672](http://localhost:15672)
+
+User: guest
+
+Password: guest
+
+**> CLI <**:
+
+To use cli from docker container use:
 
     $ docker-compose run --rm transactional-email-service-php-cli
 
-**CLI Example**
+**> CLI Example <**
 
-Create mail request 
+To create mail request enter command below and follow the instructions.
 
 ```
 docker-compose run --rm transactional-email-service-php-cli php bin/console mail:create
 ```
 
-**API Example**
+To run queue consumer use command below.
+
+```
+docker-compose run --rm transactional-email-service-php-cli php bin/console mail:consumer:consume
+```
+
+**> API Example <**
 
 Get paginated list of mails
 
