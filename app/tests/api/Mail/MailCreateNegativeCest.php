@@ -10,6 +10,7 @@ class MailCreateNegativeCest
 {
     public function testCreateMailWithoutSubject(ApiTester $I): void
     {
+        $I->declareQueue($I->getMailQueueName(), false, true, false, false);
         $I->setHeaders();
         $I->sendPost(
             'api/mails',
@@ -47,6 +48,7 @@ class MailCreateNegativeCest
         ]);
 
         $I->dontSeeInRepository(Mail::class);
+        $I->seeQueueIsEmpty($I->getMailQueueName());
     }
 
     public function testCreateMailWithoutRecipient(ApiTester $I): void
@@ -85,6 +87,7 @@ class MailCreateNegativeCest
         ]);
 
         $I->dontSeeInRepository(Mail::class);
+        $I->seeQueueIsEmpty($I->getMailQueueName());
     }
 
     public function testCreateMailWithoutRecipientName(ApiTester $I): void
@@ -126,6 +129,8 @@ class MailCreateNegativeCest
         ]);
 
         $I->dontSeeInRepository(Mail::class);
+        $I->seeQueueIsEmpty($I->getMailQueueName());
+        $I->seeNumberOfMessagesInQueue($I->getMailQueueName(), 0);
     }
 
     public function testCreateMailWithoutRecipientEmail(ApiTester $I): void
@@ -167,6 +172,8 @@ class MailCreateNegativeCest
         ]);
 
         $I->dontSeeInRepository(Mail::class);
+        $I->seeQueueIsEmpty($I->getMailQueueName());
+        $I->seeNumberOfMessagesInQueue($I->getMailQueueName(), 0);
     }
 
     public function testCreateMailWithoutContents(ApiTester $I): void
@@ -199,6 +206,8 @@ class MailCreateNegativeCest
         ]);
 
         $I->dontSeeInRepository(Mail::class);
+        $I->seeQueueIsEmpty($I->getMailQueueName());
+        $I->seeNumberOfMessagesInQueue($I->getMailQueueName(), 0);
     }
 
     public function testCreateMailWithoutContentsType(ApiTester $I): void
@@ -240,6 +249,8 @@ class MailCreateNegativeCest
         ]);
 
         $I->dontSeeInRepository(Mail::class);
+        $I->seeQueueIsEmpty($I->getMailQueueName());
+        $I->seeNumberOfMessagesInQueue($I->getMailQueueName(), 0);
     }
 
     public function testCreateMailWithoutContentsContent(ApiTester $I): void
@@ -281,10 +292,13 @@ class MailCreateNegativeCest
         ]);
 
         $I->dontSeeInRepository(Mail::class);
+        $I->seeQueueIsEmpty($I->getMailQueueName());
+        $I->seeNumberOfMessagesInQueue($I->getMailQueueName(), 0);
     }
 
-    public function testCreateMailWithoutAdditionalRecipientName(ApiTester $I): void
-    {
+    public function testCreateMailWithoutAdditionalRecipientName(
+        ApiTester $I
+    ): void {
         $I->setHeaders();
         $I->sendPost(
             'api/mails',
@@ -322,10 +336,13 @@ class MailCreateNegativeCest
         ]);
 
         $I->dontSeeInRepository(Mail::class);
+        $I->seeQueueIsEmpty($I->getMailQueueName());
+        $I->seeNumberOfMessagesInQueue($I->getMailQueueName(), 0);
     }
 
-    public function testCreateMailWithoutAdditionalRecipientEmail(ApiTester $I): void
-    {
+    public function testCreateMailWithoutAdditionalRecipientEmail(
+        ApiTester $I
+    ): void {
         $I->setHeaders();
         $I->sendPost(
             'api/mails',
@@ -363,5 +380,7 @@ class MailCreateNegativeCest
         ]);
 
         $I->dontSeeInRepository(Mail::class);
+        $I->seeQueueIsEmpty($I->getMailQueueName());
+        $I->seeNumberOfMessagesInQueue($I->getMailQueueName(), 0);
     }
 }

@@ -27,4 +27,12 @@ class ApiTester extends \Codeception\Actor
         $this->haveHttpHeader('Content-Type', 'application/json');
         $this->haveHttpHeader('Accept', 'application/json');
     }
+
+    /**
+     * @return string
+     */
+    public function getMailQueueName(): string
+    {
+        return 'queue.mail';
+    }
 }

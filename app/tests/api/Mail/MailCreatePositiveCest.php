@@ -10,6 +10,7 @@ class MailCreatePositiveCest
 {
     public function testCreateMailWithAllFields(ApiTester $I): void
     {
+        $I->purgeQueue($I->getMailQueueName());
         $I->setHeaders();
         $I->sendPost(
             'api/mails',
@@ -77,10 +78,18 @@ class MailCreatePositiveCest
         $response = json_decode($I->grabResponse(), true);
 
         $I->seeInRepository(Mail::class, ['id' => $response['id']]);
+        $I->dontSeeQueueIsEmpty($I->getMailQueueName());
+        $I->seeNumberOfMessagesInQueue($I->getMailQueueName(), 1);
+        $message = $I->grabMessageFromQueue($I->getMailQueueName());
+        $messageBody = json_decode($message->body, true);
+
+        $I->assertEquals($messageBody['mail_id'], $response['id']);
+        $I->purgeQueue($I->getMailQueueName());
     }
 
     public function testCreateMailWithMinimumFields(ApiTester $I): void
     {
+        $I->purgeQueue($I->getMailQueueName());
         $I->setHeaders();
         $I->sendPost(
             'api/mails',
@@ -127,5 +136,13 @@ class MailCreatePositiveCest
         $response = json_decode($I->grabResponse(), true);
 
         $I->seeInRepository(Mail::class, ['id' => $response['id']]);
+
+        $I->dontSeeQueueIsEmpty($I->getMailQueueName());
+        $I->seeNumberOfMessagesInQueue($I->getMailQueueName(), 1);
+        $message = $I->grabMessageFromQueue($I->getMailQueueName());
+        $messageBody = json_decode($message->body, true);
+
+        $I->assertEquals($messageBody['mail_id'], $response['id']);
+        $I->purgeQueue($I->getMailQueueName());
     }
 }
