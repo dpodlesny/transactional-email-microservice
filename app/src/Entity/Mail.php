@@ -233,6 +233,16 @@ class Mail
     }
 
     /**
+     * @return Mail
+     */
+    public function markAsSentAt(): Mail
+    {
+        $this->sentAt = new DateTime();
+
+        return $this;
+    }
+
+    /**
      * @param Recipient $recipient
      *
      * @return Mail
