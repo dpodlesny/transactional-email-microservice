@@ -60,7 +60,7 @@ class Mail
      * @Assert\Valid()
      * @Assert\NotBlank()
      *
-     * @var Recipient[]|Collection
+     * @var Collection<Recipient>
      */
     private Collection $additionalRecipients;
 
@@ -75,7 +75,7 @@ class Mail
      *      minMessage = "Contents can't be empty",
      * )
      *
-     * @var Content[]|Collection
+     * @var Collection<Content>
      */
     private Collection $contents;
 
@@ -153,9 +153,9 @@ class Mail
     }
 
     /**
-     * @return Recipient[]|Collection
+     * @return Collection<Recipient>
      */
-    public function getAdditionalRecipients()
+    public function getAdditionalRecipients(): Collection
     {
         return $this->additionalRecipients;
     }
@@ -165,7 +165,7 @@ class Mail
      *
      * @return Mail
      */
-    public function setAdditionalRecipients(array $additionalRecipients)
+    public function setAdditionalRecipients(array $additionalRecipients): Mail
     {
         $this->additionalRecipients = new ArrayCollection($additionalRecipients);
 
@@ -173,9 +173,9 @@ class Mail
     }
 
     /**
-     * @return Content[]|Collection
+     * @return Collection<Content>
      */
-    public function getContents()
+    public function getContents(): Collection
     {
         return $this->contents;
     }
@@ -185,7 +185,7 @@ class Mail
      *
      * @return Mail
      */
-    public function setContents(array $contents)
+    public function setContents(array $contents): Mail
     {
         $this->contents = new ArrayCollection($contents);
 
@@ -247,7 +247,7 @@ class Mail
      *
      * @return Mail
      */
-    public function addAdditionalRecipient(Recipient $recipient): self
+    public function addAdditionalRecipient(Recipient $recipient): Mail
     {
         if (!$this->additionalRecipients->contains($recipient)) {
             $this->additionalRecipients[] = $recipient;
@@ -261,7 +261,7 @@ class Mail
      *
      * @return Mail
      */
-    public function addContent(Content $content): self
+    public function addContent(Content $content): Mail
     {
         if (!$this->contents->contains($content)) {
             $this->contents[] = $content;
