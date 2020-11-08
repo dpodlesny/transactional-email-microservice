@@ -36,7 +36,7 @@ class MailReader implements MailReaderInterface
     /**
      * @param int $page
      *
-     * @return array
+     * @return array<string, int|array>
      */
     public function findPaginated(int $page = 1): array
     {
