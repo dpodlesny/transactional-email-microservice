@@ -37,7 +37,7 @@ class ExceptionListener
      *
      * @return JsonResponse
      */
-    private function createApiResponse(Throwable $exception): JsonResponse
+    protected function createApiResponse(Throwable $exception): JsonResponse
     {
         $statusCode = Response::HTTP_BAD_REQUEST;
 
