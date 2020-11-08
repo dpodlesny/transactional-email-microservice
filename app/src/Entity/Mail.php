@@ -153,15 +153,15 @@ class Mail
     }
 
     /**
-     * @return Collection<Recipient>
+     * @return array<Recipient>
      */
-    public function getAdditionalRecipients(): Collection
+    public function getAdditionalRecipients(): array
     {
-        return $this->additionalRecipients;
+        return $this->additionalRecipients->toArray();
     }
 
     /**
-     * @param Recipient[] $additionalRecipients
+     * @param array<Recipient> $additionalRecipients
      *
      * @return Mail
      */
@@ -173,15 +173,15 @@ class Mail
     }
 
     /**
-     * @return Collection<Content>
+     * @return array<Content>
      */
-    public function getContents(): Collection
+    public function getContents(): array
     {
-        return $this->contents;
+        return $this->contents->toArray();
     }
 
     /**
-     * @param Content[] $contents
+     * @param array<Content> $contents
      *
      * @return Mail
      */
