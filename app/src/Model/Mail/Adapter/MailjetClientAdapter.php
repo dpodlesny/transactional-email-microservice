@@ -8,6 +8,7 @@ use App\Entity\Mail;
 use App\Model\Mail\MailConfig;
 use Mailjet\Client;
 use Mailjet\Resources;
+use Psr\Log\LoggerInterface;
 
 class MailjetClientAdapter implements MailClientAdapterInterface
 {
@@ -22,14 +23,21 @@ class MailjetClientAdapter implements MailClientAdapterInterface
     protected MailConfig $mailConfig;
 
     /**
+     * @var LoggerInterface
+     */
+    protected LoggerInterface $logger;
+
+    /**
      * @param string $mailjetApiKeyPublic
      * @param string $mailjetApiKeyPrivate
      * @param MailConfig $mailConfig
+     * @param LoggerInterface $logger
      */
     public function __construct(
         string $mailjetApiKeyPublic,
         string $mailjetApiKeyPrivate,
-        MailConfig $mailConfig
+        MailConfig $mailConfig,
+        LoggerInterface $logger
     ) {
         $this->mailjetClient = new Client(
             $mailjetApiKeyPublic,
@@ -38,6 +46,7 @@ class MailjetClientAdapter implements MailClientAdapterInterface
             ['version' => 'v3.1']
         );
         $this->mailConfig = $mailConfig;
+        $this->logger = $logger;
     }
 
     /**
@@ -93,6 +102,11 @@ class MailjetClientAdapter implements MailClientAdapterInterface
         ];
 
         $response = $this->mailjetClient->post(Resources::$Email, ['body' => $body]);
+
+        if ($response->success() === false) {
+            $encodedBody = json_encode($response->getBody());
+            $this->logger->error("Sending {$mail->getId()} via Mailjet was failed with: {$encodedBody}");
+        }
 
         return $response->success();
     }

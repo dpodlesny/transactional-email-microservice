@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Command;
 
+use App\Model\CircuitBreaker\Exception\MailServicesNotAvailableException;
 use App\Model\Mail\MailConfig;
 use App\Model\Mail\Saver\MailSaverInterface;
 use App\Model\Mail\Sender\MailSenderInterface;
@@ -13,6 +14,7 @@ use PhpAmqpLib\Channel\AMQPChannel;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 use PhpAmqpLib\Exchange\AMQPExchangeType;
 use PhpAmqpLib\Message\AMQPMessage;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -50,24 +52,32 @@ class MailConsumerCommand extends Command
     protected MailSaverInterface $mailSaver;
 
     /**
+     * @var LoggerInterface
+     */
+    protected LoggerInterface $logger;
+
+    /**
      * @param QueueFactory $queueFactory
      * @param MailConfig $mailConfig
      * @param MailSenderInterface $mailSender
      * @param MailRepository $mailRepository
      * @param MailSaverInterface $mailSaver
+     * @param LoggerInterface $logger
      */
     public function __construct(
         QueueFactory $queueFactory,
         MailConfig $mailConfig,
         MailSenderInterface $mailSender,
         MailRepository $mailRepository,
-        MailSaverInterface $mailSaver
+        MailSaverInterface $mailSaver,
+        LoggerInterface $logger
     ) {
         $this->queueFactory = $queueFactory;
         $this->mailConfig = $mailConfig;
         $this->mailSender = $mailSender;
         $this->mailRepository = $mailRepository;
         $this->mailSaver = $mailSaver;
+        $this->logger = $logger;
 
         parent::__construct();
     }
@@ -99,31 +109,38 @@ class MailConsumerCommand extends Command
             false
         );
         $channel->queue_bind($this->mailConfig->getQueueName(), $this->mailConfig->getQueueExchangeName());
-        $channel->basic_consume(
-            $this->mailConfig->getQueueName(),
-            $this->mailConfig->getQueueConsumerTag(),
-            false,
-            false,
-            false,
-            false,
-            function (AMQPMessage $message): void {
-                $this->processMessage($message);
+
+        try {
+            $channel->basic_consume(
+                $this->mailConfig->getQueueName(),
+                $this->mailConfig->getQueueConsumerTag(),
+                false,
+                true,
+                false,
+                false,
+                function (AMQPMessage $message): void {
+                    $this->processMessage($message);
+                }
+            );
+
+            register_shutdown_function(
+                function (
+                    AMQPChannel $channel,
+                    AMQPStreamConnection $connection
+                ): void {
+                    $this->shutdown($channel, $connection);
+                },
+                $channel,
+                $connection
+            );
+
+            while ($channel->is_consuming()) {
+                $channel->wait();
             }
-        );
-
-        register_shutdown_function(
-            function (
-                AMQPChannel $channel,
-                AMQPStreamConnection $connection
-            ): void {
-                $this->shutdown($channel, $connection);
-            },
-            $channel,
-            $connection
-        );
-
-        while ($channel->is_consuming()) {
-            $channel->wait();
+        } catch (MailServicesNotAvailableException $exception) {
+            $message = 'Mail services is not available. Consuming stopped...';
+            $this->logger->critical($message);
+            $output->writeln($message);
         }
 
         return Command::SUCCESS;
@@ -150,7 +167,9 @@ class MailConsumerCommand extends Command
         $mail = $this->mailRepository->find($body['mail_id']);
 
         if ($mail === null || $mail->getSentAt() !== null) {
-            $this->output->writeln('Mail was not found or already sent.');
+            $message = 'Mail was not found or already sent.';
+            $this->output->writeln($message);
+            $this->logger->warning($message);
 
             return;
         }

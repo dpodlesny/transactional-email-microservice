@@ -7,6 +7,7 @@ namespace App\Model\Mail\Adapter;
 use App\Entity\Mail;
 use App\Model\Mail\MailConfig;
 use Exception;
+use Psr\Log\LoggerInterface;
 use SendGrid;
 use SendGrid\Mail\Mail as SendGridMail;
 
@@ -23,13 +24,23 @@ class SendgridClientAdapter implements MailClientAdapterInterface
     protected MailConfig $mailConfig;
 
     /**
+     * @var LoggerInterface
+     */
+    protected LoggerInterface $logger;
+
+    /**
      * @param string $sendGridApiKey
      * @param MailConfig $mailConfig
+     * @param LoggerInterface $logger
      */
-    public function __construct(string $sendGridApiKey, MailConfig $mailConfig)
-    {
+    public function __construct(
+        string $sendGridApiKey,
+        MailConfig $mailConfig,
+        LoggerInterface $logger
+    ) {
         $this->sendGridClient = new SendGrid($sendGridApiKey);
         $this->mailConfig = $mailConfig;
+        $this->logger = $logger;
     }
 
     /**
@@ -55,8 +66,16 @@ class SendgridClientAdapter implements MailClientAdapterInterface
         try {
             $response = $this->sendGridClient->send($email);
 
-            return $response->statusCode() >= 200 && $response->statusCode() <= 299;
+            if ($response->statusCode() >= 200 && $response->statusCode() <= 299) {
+                return true;
+            }
+
+            $this->logger->error("Sendgrid Mail#{$mail->getId()} was failed with: " . $response->body());
+
+            return false;
         } catch (Exception $e) {
+            $this->logger->error("Sendgrid Mail#{$mail->getId()} was failed with: " . $e->getMessage());
+
             return false;
         }
     }
